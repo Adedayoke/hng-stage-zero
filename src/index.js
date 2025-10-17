@@ -23,15 +23,16 @@ async function fetchCatFact() {
   }
 }
 
-// Health check endpoints - respond immediately
+// Health check endpoints
 app.get("/", (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('OK');
+  return res.status(200).json({ 
+    status: "success",
+    message: "Server is running" 
+  });
 });
 
 app.get("/health", (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ status: "healthy" }));
+  return res.status(200).json({ status: "healthy" });
 });
 
 app.get("/me", async (req, res) => {
