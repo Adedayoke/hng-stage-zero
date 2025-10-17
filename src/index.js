@@ -23,12 +23,16 @@ async function fetchCatFact() {
   }
 }
 
+// Simple health check endpoint
 app.get("/", (req, res) => {
-  res.status(200).json({ 
-    status: "success",
-    message: "Server is running. Visit /me for profile info.",
-    timestamp: new Date().toISOString()
-  });
+  console.log('Health check endpoint hit');
+  res.status(200).send('OK');
+  console.log('Response sent');
+});
+
+// Alternative health check for Railway
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy" });
 });
 
 app.get("/me", async (req, res) => {
