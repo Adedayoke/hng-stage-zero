@@ -73,9 +73,28 @@ const server = app.listen(port, "0.0.0.0", () => {
   console.log(`Profile endpoint: http://0.0.0.0:${port}/me`);
 });
 
+// Error handling
+server.on('error', (error) => {
+  console.error('Server error:', error);
+  process.exit(1);
+});
+
+// Keep alive
+setInterval(() => {
+  console.log(`Server still alive at ${new Date().toISOString()}`);
+}, 30000); // Log every 30 seconds
+
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, closing server gracefully...');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, closing server...');
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
