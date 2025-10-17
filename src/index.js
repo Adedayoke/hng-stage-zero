@@ -17,6 +17,15 @@ async function fetchCatFact() {
   }
 }
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to HNG Stage 0 API",
+    endpoints: {
+      profile: "/me"
+    }
+  });
+});
+
 app.get("/me", async (req, res) => {
   try {
     const fetchedData = await fetchCatFact();
