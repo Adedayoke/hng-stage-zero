@@ -71,40 +71,7 @@ app.get("/me", async (req, res) => {
 });
 
 const server = app.listen(port, "0.0.0.0", () => {
-  console.log(`✅ Server successfully started on 0.0.0.0:${port}`);
+  console.log(`✅ Server started successfully`);
+  console.log(`Listening on 0.0.0.0:${port}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Health check: http://0.0.0.0:${port}/`);
-  console.log(`Profile endpoint: http://0.0.0.0:${port}/me`);
-  
-  // Confirm server is listening
-  const address = server.address();
-  console.log(`Server address info:`, address);
-});
-
-// Error handling
-server.on('error', (error) => {
-  console.error('Server error:', error);
-  process.exit(1);
-});
-
-// Keep alive
-setInterval(() => {
-  console.log(`Server still alive at ${new Date().toISOString()}`);
-}, 30000); // Log every 30 seconds
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, closing server gracefully...');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
-});
-
-process.on('SIGINT', () => {
-  console.log('SIGINT received, closing server...');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
 });
