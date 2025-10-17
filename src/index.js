@@ -75,6 +75,10 @@ const server = app.listen(port, "0.0.0.0", () => {
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Health check: http://0.0.0.0:${port}/`);
   console.log(`Profile endpoint: http://0.0.0.0:${port}/me`);
+  
+  // Confirm server is listening
+  const address = server.address();
+  console.log(`Server address info:`, address);
 });
 
 // Error handling
