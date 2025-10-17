@@ -23,16 +23,15 @@ async function fetchCatFact() {
   }
 }
 
-// Simple health check endpoint
+// Health check endpoints - respond immediately
 app.get("/", (req, res) => {
-  console.log('Health check endpoint hit');
-  res.status(200).send('OK');
-  console.log('Response sent');
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('OK');
 });
 
-// Alternative health check for Railway
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "healthy" });
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ status: "healthy" }));
 });
 
 app.get("/me", async (req, res) => {
