@@ -17,6 +17,10 @@ async function fetchCatFact() {
   }
 }
 
+app.get("/", (req, res) => {
+  res.json({ message: "Server is running. Visit /me for profile info." });
+});
+
 app.get("/me", async (req, res) => {
   try {
     const fetchedData = await fetchCatFact();
