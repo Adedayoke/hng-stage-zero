@@ -6,6 +6,12 @@ const axios = require("axios");
 
 const port = process.env.PORT || 3000;
 
+// Health check and readiness
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
 async function fetchCatFact() {
   try {
     const response = await axios.get("https://catfact.ninja/fact", {
@@ -18,7 +24,11 @@ async function fetchCatFact() {
 }
 
 app.get("/", (req, res) => {
-  res.json({ message: "Server is running. Visit /me for profile info." });
+  res.status(200).json({ 
+    status: "success",
+    message: "Server is running. Visit /me for profile info.",
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.get("/me", async (req, res) => {
@@ -56,6 +66,18 @@ app.get("/me", async (req, res) => {
   }
 });
 
-app.listen(port, "0.0.0.0", () => {
-  console.log("Server listening @ port: ", port);
+const server = app.listen(port, "0.0.0.0", () => {
+  console.log(`✅ Server successfully started on 0.0.0.0:${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Health check: http://0.0.0.0:${port}/`);
+  console.log(`Profile endpoint: http://0.0.0.0:${port}/me`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, closing server gracefully...');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
